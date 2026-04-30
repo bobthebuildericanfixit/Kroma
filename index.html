@@ -3,96 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kroma MOTD</title>
+    <title>Kroma OS Terminal</title>
     <style>
-        body {
-            background-color: #050505;
-            color: #00ff41; /* Classic terminal green */
-            font-family: 'Courier New', Courier, monospace;
-            padding: 40px;
-            display: flex;
-            justify-content: center;
+        /* Importing a professional coding font */
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            --term-bg: #090a0f; /* Deeper, richer black */
+            --term-border: #222;
+            --text-main: #00ff41;
+            --text-glow: rgba(0, 255, 65, 0.4);
+            --text-dim: #666;
+            --text-highlight: #ffffff;
+            --text-alert: #ff3333;
         }
 
-        .terminal-box {
-            background-color: #111;
-            border: 1px solid #333;
-            padding: 20px;
-            width: 600px;
-            box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
+        body {
+            background-color: #000;
+            color: var(--text-main);
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .terminal-container {
+            width: 650px;
+            background-color: var(--term-bg);
+            border: 1px solid var(--term-border);
+            border-radius: 8px; /* Smooth rounded corners */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 20px rgba(0, 255, 65, 0.05);
+            overflow: hidden;
             position: relative;
         }
 
-        /* Fake terminal window header */
+        /* Subtle CRT Scanline Overlay */
+        .terminal-container::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 4px;
+            z-index: 2;
+            pointer-events: none; /* Lets you click through the overlay */
+        }
+
+        /* Polished Window Chrome */
         .terminal-header {
-            background-color: #222;
-            margin: -20px -20px 20px -20px;
-            padding: 5px 10px;
-            font-size: 0.8rem;
-            color: #888;
-            border-bottom: 1px solid #333;
+            background: #14151a;
+            border-bottom: 1px solid var(--term-border);
+            padding: 12px 15px;
             display: flex;
+            align-items: center;
             justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-dim);
         }
 
-        .sys-info {
-            margin-bottom: 20px;
-            line-height: 1.5;
+        .window-controls {
+            display: flex;
+            gap: 8px;
         }
 
-        .highlight {
-            color: #fff;
-            font-weight: bold;
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .dot.close { background-color: #ff5f56; }
+        .dot.min { background-color: #ffbd2e; }
+        .dot.max { background-color: #27c93f; }
+
+        .terminal-body {
+            padding: 25px;
+            /* The secret to professional retro text is the text-shadow */
+            text-shadow: 0 0 5px var(--text-glow);
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
         }
 
-        .motd-content {
-            border-top: 1px dashed #444;
-            padding-top: 15px;
-            min-height: 50px;
+        .sys-info { margin-bottom: 20px; }
+        
+        .highlight { 
+            color: var(--text-highlight); 
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+            font-weight: 700; 
+        }
+        
+        .alert { 
+            color: var(--text-alert); 
+            text-shadow: 0 0 8px rgba(255, 51, 51, 0.6); 
+            font-weight: 700;
         }
 
-        /* The blinking cursor */
+        .divider {
+            border-top: 1px dashed rgba(0, 255, 65, 0.2);
+            margin: 20px 0;
+        }
+
         .cursor {
             display: inline-block;
-            width: 8px;
-            height: 15px;
-            background-color: #00ff41;
+            width: 10px;
+            height: 1.2em;
+            background-color: var(--text-main);
+            vertical-align: middle;
             animation: blink 1s step-end infinite;
-            vertical-align: bottom;
+            box-shadow: 0 0 8px var(--text-glow);
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 </head>
 <body>
 
-    <div class="terminal-box">
+    <div class="terminal-container">
         <div class="terminal-header">
+            <div class="window-controls">
+                <div class="dot close"></div>
+                <div class="dot min"></div>
+                <div class="dot max"></div>
+            </div>
             <span>root@kroma:~</span>
-            <span>tty1</span>
+            <span>bash - 80x24</span>
         </div>
 
-        <div class="sys-info">
-            KROMA OS v1.0.4a (x86_64)<br>
-            System Uptime: <span class="highlight">94 Days, 12 Hrs, 41 Mins</span><br>
-            Active Connections: <span class="highlight">4,201</span><br>
-            Security Status: <span style="color: #ff5252;">[WARNING: UNKNOWN PROXIES DETECTED]</span>
-        </div>
+        <div class="terminal-body">
+            <div class="sys-info">
+                KROMA OS v1.0.4a (x86_64)<br>
+                System Uptime: <span class="highlight">94 Days, 12 Hrs, 41 Mins</span><br>
+                Active Connections: <span class="highlight">4,201</span><br>
+                Security Status: <span class="alert">[WARNING: UNKNOWN PROXIES DETECTED]</span>
+            </div>
 
-        <div class="motd-content">
-            <span id="typewriter"></span><span class="cursor"></span>
+            <div class="divider"></div>
+
+            <div class="motd-content">
+                <span id="typewriter"></span><span class="cursor"></span>
+            </div>
         </div>
     </div>
 
     <script>
-        // The message you want to type out
         const text = "MOTD: Welcome to the void. Trust the system, but verify the code. No logs are kept. Proceed with caution.";
-        
         let i = 0;
-        const speed = 40; // Speed of typing in milliseconds
+        const speed = 35; 
 
         function typeWriter() {
             if (i < text.length) {
@@ -101,9 +159,7 @@
                 setTimeout(typeWriter, speed);
             }
         }
-
-        // Start the effect after a brief delay to simulate loading
-        setTimeout(typeWriter, 800);
+        setTimeout(typeWriter, 600);
     </script>
 
 </body>
