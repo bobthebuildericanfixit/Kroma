@@ -3,182 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kroma - The Anonymous Network</title>
+    <title>Kroma MOTD</title>
     <style>
-        :root {
-            --bg: #0f0f0f;
-            --panel: #161616;
-            --border: #2a2a2a;
-            --accent: #00ff41; /* Matrix green for that tech vibe */
-            --text: #d1d1d1;
-            --text-dim: #777;
-            --link: #4da6ff;
-        }
-
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: "Courier New", Courier, monospace; /* Monospace for the retro feel */
-            margin: 0;
+            background-color: #050505;
+            color: #00ff41; /* Classic terminal green */
+            font-family: 'Courier New', Courier, monospace;
+            padding: 40px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
         }
 
-        header {
-            margin: 40px 0;
-            text-align: center;
-        }
-
-        .logo {
-            font-size: 4rem;
-            font-weight: bold;
-            color: var(--accent);
-            text-shadow: 0 0 10px var(--accent);
-            margin: 0;
-        }
-
-        .main-layout {
-            display: flex;
-            gap: 20px;
-            max-width: 1100px;
-            width: 95%;
-        }
-
-        /* Sidebar / News */
-        .sidebar {
-            flex: 1;
-            background: var(--panel);
-            border: 1px solid var(--border);
-            padding: 15px;
-            height: fit-content;
-        }
-
-        .sidebar h3 {
-            border-bottom: 1px solid var(--accent);
-            color: var(--accent);
-            margin-top: 0;
-        }
-
-        .news-item {
-            font-size: 0.85rem;
-            margin-bottom: 15px;
-            border-bottom: 1px opacity 0.1 solid white;
-        }
-
-        .date { color: var(--text-dim); }
-
-        /* Board Directory */
-        .content {
-            flex: 2.5;
-            background: var(--panel);
-            border: 1px solid var(--border);
+        .terminal-box {
+            background-color: #111;
+            border: 1px solid #333;
             padding: 20px;
+            width: 600px;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
+            position: relative;
         }
 
-        .board-cat {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .cat-box h2 {
-            font-size: 1rem;
-            background: #222;
+        /* Fake terminal window header */
+        .terminal-header {
+            background-color: #222;
+            margin: -20px -20px 20px -20px;
             padding: 5px 10px;
-            margin-bottom: 10px;
-        }
-
-        ul { list-style: none; padding: 0; }
-        li { margin-bottom: 5px; }
-        
-        a { color: var(--link); text-decoration: none; }
-        a:hover { text-decoration: underline; color: var(--accent); }
-
-        .stat-bar {
-            width: 100%;
-            background: #000;
-            border-top: 1px solid var(--border);
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            text-align: center;
             font-size: 0.8rem;
-            color: var(--text-dim);
+            color: #888;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
         }
 
-        .accent-text { color: var(--accent); }
+        .sys-info {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .highlight {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .motd-content {
+            border-top: 1px dashed #444;
+            padding-top: 15px;
+            min-height: 50px;
+        }
+
+        /* The blinking cursor */
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background-color: #00ff41;
+            animation: blink 1s step-end infinite;
+            vertical-align: bottom;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <p class="logo">KROMA</p>
-    <span>Welcome to the Void.</span>
-</header>
+    <div class="terminal-box">
+        <div class="terminal-header">
+            <span>root@kroma:~</span>
+            <span>tty1</span>
+        </div>
 
-<div class="main-layout">
-    <div class="sidebar">
-        <h3>System Logs</h3>
-        <div class="news-item">
-            <span class="date">2026-04-30:</span><br>
-            Kroma v1.0 is live. Anonymity is the only rule.
+        <div class="sys-info">
+            KROMA OS v1.0.4a (x86_64)<br>
+            System Uptime: <span class="highlight">94 Days, 12 Hrs, 41 Mins</span><br>
+            Active Connections: <span class="highlight">4,201</span><br>
+            Security Status: <span style="color: #ff5252;">[WARNING: UNKNOWN PROXIES DETECTED]</span>
         </div>
-        <div class="news-item">
-            <span class="date">2026-04-28:</span><br>
-            Server migration to offshore hosting complete.
-        </div>
-        <div class="news-item">
-            <span class="date">2026-04-25:</span><br>
-            Updated stylesheet to support dark-mode by default.
+
+        <div class="motd-content">
+            <span id="typewriter"></span><span class="cursor"></span>
         </div>
     </div>
 
-    <div class="content">
-        <div class="board-cat">
-            <div class="cat-box">
-                <h2>// Technology</h2>
-                <ul>
-                    <li><a href="#">/cpu/</a> - Hardware</li>
-                    <li><a href="#">/dev/</a> - Development</li>
-                    <li><a href="#">/sec/</a> - Security</li>
-                    <li><a href="#">/net/</a> - Networking</li>
-                </ul>
-            </div>
-            <div class="cat-box">
-                <h2>// Culture</h2>
-                <ul>
-                    <li><a href="#">/art/</a> - Graphics</li>
-                    <li><a href="#">/mus/</a> - Sound</li>
-                    <li><a href="#">/vid/</a> - Cinema</li>
-                    <li><a href="#">/lit/</a> - Text</li>
-                </ul>
-            </div>
-            <div class="cat-box">
-                <h2>// Creative</h2>
-                <ul>
-                    <li><a href="#">/img/</a> - Photos</li>
-                    <li><a href="#">/drw/</a> - Illustration</li>
-                    <li><a href="#">/diy/</a> - Projects</li>
-                </ul>
-            </div>
-            <div class="cat-box">
-                <h2>// Misc</h2>
-                <ul>
-                    <li><a href="#">/gen/</a> - General</li>
-                    <li><a href="#">/rnd/</a> - Random</li>
-                    <li><a href="#">/meta/</a> - Site Info</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
+    <script>
+        // The message you want to type out
+        const text = "MOTD: Welcome to the void. Trust the system, but verify the code. No logs are kept. Proceed with caution.";
+        
+        let i = 0;
+        const speed = 40; // Speed of typing in milliseconds
 
-<div class="stat-bar">
-    Total Posts: <span class="accent-text">1,042,384</span> | 
-    Active Users: <span class="accent-text">4,209</span> | 
-    Running on <span class="accent-text">Kroma-Engine v1.0</span>
-</div>
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, speed);
+            }
+        }
+
+        // Start the effect after a brief delay to simulate loading
+        setTimeout(typeWriter, 800);
+    </script>
 
 </body>
 </html>
