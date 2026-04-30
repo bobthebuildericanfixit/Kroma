@@ -2,165 +2,146 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kroma OS Terminal</title>
+    <title>/kroma/ - Kroma OS Discussion</title>
     <style>
-        /* Importing a professional coding font */
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
-
+        /* The Classic 4chan (Yotsuba B) Palette */
         :root {
-            --term-bg: #090a0f; /* Deeper, richer black */
-            --term-border: #222;
-            --text-main: #00ff41;
-            --text-glow: rgba(0, 255, 65, 0.4);
-            --text-dim: #666;
-            --text-highlight: #ffffff;
-            --text-alert: #ff3333;
+            --bg-color: #d1d5ee;       /* Page background */
+            --post-bg: #d6daf0;      /* Post background */
+            --post-border: #b7c5d9;  /* Post border */
+            --text-color: #000000;
+            --link-color: #34345c;
+            --subject-color: #0f0c5d;
+            --name-color: #117743;
+            --quote-color: #789922;
         }
 
         body {
-            background-color: #000;
-            color: var(--text-main);
-            font-family: 'JetBrains Mono', 'Courier New', monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: arial,helvetica,sans-serif;
+            font-size: 10pt;
+            margin: 0;
+            padding: 10px;
+        }
+
+        /* Header / Board Title */
+        .boardBanner {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .boardTitle {
+            font-family: Tahoma, sans-serif;
+            font-size: 28px;
+            font-weight: bold;
+            color: #af0a0f;
+            letter-spacing: -2px;
             margin: 0;
         }
 
-        .terminal-container {
-            width: 650px;
-            background-color: var(--term-bg);
-            border: 1px solid var(--term-border);
-            border-radius: 8px; /* Smooth rounded corners */
-            box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 20px rgba(0, 255, 65, 0.05);
-            overflow: hidden;
-            position: relative;
+        .boardSubtitle { font-size: 12px; }
+
+        hr { border: 0; border-top: 1px solid #b7c5d9; margin: 10px 0; }
+
+        /* The Post Container */
+        .post {
+            display: table;
+            background-color: var(--post-bg);
+            border: 1px solid var(--post-border);
+            padding: 5px;
+            margin-bottom: 4px;
+            min-width: 400px;
         }
 
-        /* Subtle CRT Scanline Overlay */
-        .terminal-container::after {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-            background-size: 100% 4px;
-            z-index: 2;
-            pointer-events: none; /* Lets you click through the overlay */
+        .postInfo { font-size: 9pt; margin-bottom: 10px; }
+
+        .subject { color: var(--subject-color); font-weight: bold; }
+        .name { color: var(--name-color); font-weight: bold; }
+        .dateTime { color: #444; }
+        
+        /* Message body */
+        .postMessage {
+            margin: 10px 10px 15px 30px;
+            line-height: 1.2;
         }
 
-        /* Polished Window Chrome */
-        .terminal-header {
-            background: #14151a;
-            border-bottom: 1px solid var(--term-border);
-            padding: 12px 15px;
+        /* Greentext */
+        .quote { color: var(--quote-color); }
+
+        /* Thumbnail area */
+        .fileInfo { font-size: 9pt; margin-bottom: 5px; }
+        .fileText { margin-bottom: 5px; }
+        .thumbnail {
+            float: left;
+            margin: 5px 20px 10px 5px;
+            border: 1px solid #000; /* Mimicking the terminal window as an image */
+            background: #000;
+            padding: 2px;
+        }
+
+        /* Nav links */
+        .navLinks { font-size: 12px; margin-bottom: 15px; }
+        a { color: var(--link-color); text-decoration: underline; }
+        a:hover { color: #ff0000; }
+
+        /* Fake Terminal Image Mockup */
+        .fake-img {
+            width: 150px;
+            height: 90px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            color: var(--text-dim);
+            justify-content: center;
+            font-size: 6px;
+            color: #00ff41;
+            text-align: left;
+            overflow: hidden;
+            border: 1px solid #333;
         }
-
-        .window-controls {
-            display: flex;
-            gap: 8px;
-        }
-
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-        .dot.close { background-color: #ff5f56; }
-        .dot.min { background-color: #ffbd2e; }
-        .dot.max { background-color: #27c93f; }
-
-        .terminal-body {
-            padding: 25px;
-            /* The secret to professional retro text is the text-shadow */
-            text-shadow: 0 0 5px var(--text-glow);
-            line-height: 1.6;
-            position: relative;
-            z-index: 1;
-        }
-
-        .sys-info { margin-bottom: 20px; }
-        
-        .highlight { 
-            color: var(--text-highlight); 
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-            font-weight: 700; 
-        }
-        
-        .alert { 
-            color: var(--text-alert); 
-            text-shadow: 0 0 8px rgba(255, 51, 51, 0.6); 
-            font-weight: 700;
-        }
-
-        .divider {
-            border-top: 1px dashed rgba(0, 255, 65, 0.2);
-            margin: 20px 0;
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 10px;
-            height: 1.2em;
-            background-color: var(--text-main);
-            vertical-align: middle;
-            animation: blink 1s step-end infinite;
-            box-shadow: 0 0 8px var(--text-glow);
-        }
-
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 </head>
 <body>
 
-    <div class="terminal-container">
-        <div class="terminal-header">
-            <div class="window-controls">
-                <div class="dot close"></div>
-                <div class="dot min"></div>
-                <div class="dot max"></div>
+    <div class="navLinks">[<a href="#">a</a> / <a href="#">b</a> / <a href="#">v</a> / <a href="#">kroma</a> / <a href="#">g</a>]</div>
+
+    <div class="boardBanner">
+        <h1 class="boardTitle">/kroma/ - Kroma OS</h1>
+        <div class="boardSubtitle">The void is calling. Don't pick up.</div>
+    </div>
+
+    <hr>
+
+    <div class="postContainer">
+        <div class="post">
+            <div class="fileText">File: <a href="#">kroma_terminal_v1.png</a> (42 KB, 800x600)</div>
+            
+            <div class="thumbnail">
+                <div class="fake-img">
+                   KROMA OS v1.0.4a<br>
+                   Uptime: 94 Days...<br>
+                   [WARNING: PROXIES]
+                </div>
             </div>
-            <span>root@kroma:~</span>
-            <span>bash - 80x24</span>
-        </div>
 
-        <div class="terminal-body">
-            <div class="sys-info">
-                KROMA OS v1.0.4a (x86_64)<br>
-                System Uptime: <span class="highlight">94 Days, 12 Hrs, 41 Mins</span><br>
-                Active Connections: <span class="highlight">4,201</span><br>
-                Security Status: <span class="alert">[WARNING: UNKNOWN PROXIES DETECTED]</span>
+            <div class="postInfo">
+                <input type="checkbox">
+                <span class="subject">KROMA OS v1.0.4a Deployment</span> 
+                <span class="name">Anonymous</span> 
+                <span class="dateTime">04/30/26(Thu)12:31:11</span> 
+                <span class="postNum">No.78429103</span>
             </div>
 
-            <div class="divider"></div>
-
-            <div class="motd-content">
-                <span id="typewriter"></span><span class="cursor"></span>
+            <div class="postMessage">
+                <span class="quote">>System Uptime: 94 Days, 12 Hrs, 41 Mins</span><br>
+                <span class="quote">>Active Connections: 4,201</span><br><br>
+                Welcome to the void. Trust the system, but verify the code. <br>
+                No logs are kept. Proceed with caution. <br><br>
+                Anyone else getting the unknown proxy warning?
             </div>
         </div>
     </div>
 
-    <script>
-        const text = "MOTD: Welcome to the void. Trust the system, but verify the code. No logs are kept. Proceed with caution.";
-        let i = 0;
-        const speed = 35; 
-
-        function typeWriter() {
-            if (i < text.length) {
-                document.getElementById("typewriter").innerHTML += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, speed);
-            }
-        }
-        setTimeout(typeWriter, 600);
-    </script>
+    <hr>
 
 </body>
 </html>
