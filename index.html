@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>/tech/ - Kroma</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --container-bg: #1e1e1e;
+            --post-bg: #2a2a2a;
+            --text-main: #e0e0e0;
+            --text-muted: #888888;
+            --link-color: #64b5f6;
+            --accent: #ff5252;
+            --border-color: #444;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--accent);
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Post Box Styling */
+        .post-form-container {
+            background-color: var(--container-bg);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            max-width: 500px;
+            margin: 0 auto 30px auto;
+        }
+
+        .post-form input[type="text"], 
+        .post-form textarea {
+            width: 100%;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .post-form textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .post-form input[type="submit"] {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Thread Styling */
+        .thread {
+            border-top: 2px solid var(--border-color);
+            padding-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        .op-post {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .post-image {
+            max-width: 200px;
+            max-height: 200px;
+            border: 1px solid var(--border-color);
+        }
+
+        .post-header {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .anon-name {
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .post-subject {
+            color: var(--link-color);
+            font-weight: bold;
+        }
+
+        .post-id {
+            color: var(--text-muted);
+        }
+
+        /* Reply Styling */
+        .reply {
+            background-color: var(--post-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            margin-bottom: 10px;
+            margin-left: 40px;
+            display: inline-block;
+            min-width: 40%;
+            max-width: 80%;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>/tech/ - Technology</h1>
+        <a href="index.html">[Return to Kroma Home]</a>
+    </header>
+
+    <div class="post-form-container">
+        <form class="post-form">
+            <input type="text" placeholder="Name (Optional)" value="Anonymous">
+            <input type="text" placeholder="Subject">
+            <textarea placeholder="Comment"></textarea>
+            <input type="file" accept="image/*" style="margin-bottom: 10px;">
+            <input type="submit" value="Post">
+        </form>
+    </div>
+
+    <div class="thread">
+        <div class="op-post">
+            <img src="https://via.placeholder.com/200" alt="Placeholder Image" class="post-image">
+            <div class="post-content">
+                <div class="post-header">
+                    <span class="post-subject">New PC Build</span> 
+                    <span class="anon-name">Anonymous</span> 
+                    <span class="post-id">04/30/26(Thu)12:00:00 No.1000001</span>
+                </div>
+                <div class="post-body">
+                    Finally got the parts for my new rig. What operating system are we running these days? Is it worth jumping to Windows 11 or should I stick to Linux?
+                </div>
+            </div>
+        </div>
+
+        <div class="reply">
+            <div class="post-header">
+                <span class="anon-name">Anonymous</span> 
+                <span class="post-id">04/30/26(Thu)12:05:12 No.1000002</span>
+            </div>
+            <div class="post-body">
+                >>1000001<br>
+                Stick to Linux. Windows is just bloatware at this point.
+            </div>
+        </div>
+
+        <div class="reply">
+            <div class="post-header">
+                <span class="anon-name">Anonymous</span> 
+                <span class="post-id">04/30/26(Thu)12:12:45 No.1000003</span>
+            </div>
+            <div class="post-body">
+                >>1000001<br>
+                Depends on what games you play. Check if your main games have anti-cheats that block Linux before you format your drive.
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
